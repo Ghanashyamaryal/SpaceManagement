@@ -1,4 +1,3 @@
 export const queryKey = {
-  // DEPARTMENTS: "departments",
-  // CITIES: "cities",
+  WORKSPACES: "workspaces",
 } as const;

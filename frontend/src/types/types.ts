@@ -1,4 +1,4 @@
-export interface UserData {
+﻿export interface UserData {
   name: string;
   email: string;
   image?: string;
@@ -277,3 +277,15 @@ export interface PieChartProps {
   data: unknown[];
   colors?: string[];
 }
+
+
+export const WORKSPACE_TYPES = [
+  'hot_desk',
+  'dedicated_desk',
+  'focus_pod',
+  'meeting_room',
+  'conference_hall',
+  'private_cabin',
+] as const;
+
+export type WorkspaceType = (typeof WORKSPACE_TYPES)[number];

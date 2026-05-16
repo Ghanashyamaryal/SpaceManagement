@@ -1,16 +1,21 @@
 import Error from "@Components/common/Error";
 import Loading from "@Components/common/Loading";
 import NotFound from "@Components/common/NotFound";
+import { Toaster } from "@Components/ui/Sonner";
 import React, { lazy, Suspense } from "react";
 import type { RouteObject } from "react-router-dom";
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
 import { AuthProvider } from "./context/authcontext";
 import AuthLayout from "./layout/authlayout";
 import AdminProtectedRoute from "./routes/adminProtected.route";
 import GlobalProtectedRoute from "./routes/globalProtected.route";
 import PublicRoute from "./routes/public.route";
-import { Toaster } from "@Components/ui/Sonner";
-import { userRoutes } from "./routes/routes";
+import { manageSpaceRoutes, userRoutes } from "./routes/routes";
 
 const LoginForm = lazy(() => import("./auth/login"));
 const SignupForm = lazy(() => import("./auth/signup"));
@@ -50,21 +55,8 @@ const adminOnlyRoutes: RouteObject[] = [
         element: <Navigate to="/dashboard" replace />,
       },
       ...userRoutes,
-      // ...caregiverRoutes,
+      ...manageSpaceRoutes,
       // ...visitLogRoutes,
-      // ...consumerRoutes,
-      // ...AssignmentcaregiverRoutes,
-      // ...cityManagementRoutes,
-      // ...companyManagementRoutes,
-      // ...DepartmentManagementRoutes,
-      // ...reportRoutes,
-      // ...stateManagementRoutes,
-      // ...auditLogRoutes,
-      // ...insuranceProviderRoutes,
-      // ...rolesRoutes,
-      // ...messagingRoutes,
-      // ...billedHoursRoutes,
-      // ...hoursUtilizationRoutes,
     ],
   },
 ];
