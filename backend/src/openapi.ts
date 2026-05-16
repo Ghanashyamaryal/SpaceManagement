@@ -7,8 +7,8 @@ export const openapiSpec = {
       'REST API for the CoWork space-management platform. JWT Bearer auth on most endpoints; use POST /api/auth/login to obtain a token, then click "Authorize" above and paste it.',
   },
   servers: [
+    { url: 'https://space-management-system-w2i3.onrender.com', description: 'Production' },
     { url: 'http://localhost:8080', description: 'Local dev' },
-    { url: 'https://YOUR-RENDER-URL.onrender.com', description: 'Production' },
   ],
   tags: [
     { name: 'Auth', description: 'Signup, login, password reset, current user' },
