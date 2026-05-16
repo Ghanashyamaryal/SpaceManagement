@@ -475,6 +475,21 @@ For confirming/cancelling.
 
 ---
 
+## Health check
+
+### `GET /health` (public)
+
+For uptime pingers (e.g. cron-job.org, UptimeRobot) to keep the service warm on Render free tier.
+
+```json
+// Response 200
+{ "ok": true, "uptime": 123.45 }
+```
+
+**Render free deployment note:** the Node process spins down after ~15 min of inactivity. Configure an external pinger to hit `/health` every 10 minutes — internal cron will not work because the process is killed during sleep.
+
+---
+
 ## Frontend integration notes
 
 - **Token storage** — store JWT in `localStorage` (simpler) or httpOnly cookie (more secure, requires CORS/credentials setup on backend). Send via `Authorization: Bearer <token>` header.
