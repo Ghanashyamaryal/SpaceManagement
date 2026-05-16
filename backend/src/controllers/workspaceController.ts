@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import { WorkspaceModel } from '../models/Workspace.js';
 import { BranchModel } from '../models/Branch.js';
+import { BookingModel } from '../models/Booking.js';
 
 export async function createWorkspace(req: Request, res: Response): Promise<void> {
   const actor = req.user!;
@@ -65,6 +66,47 @@ export async function updateWorkspace(req: Request, res: Response): Promise<void
   Object.assign(workspace, updates);
   await workspace.save();
   res.json({ workspace });
+}
+
+export async function getWorkspaceAvailability(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  const dateParam = req.query.date as string | undefined;
+
+  if (!dateParam) {
+    res.status(400).json({ error: 'date query param required (YYYY-MM-DD)' });
+    return;
+  }
+
+  const day = new Date(dateParam);
+  if (isNaN(day.getTime())) {
+    res.status(400).json({ error: 'invalid date format' });
+    return;
+  }
+
+  const workspace = await WorkspaceModel.findById(id);
+  if (!workspace) {
+    res.status(404).json({ error: 'Workspace not found' });
+    return;
+  }
+
+  const dayStart = new Date(day);
+  dayStart.setUTCHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setUTCDate(dayEnd.getUTCDate() + 1);
+
+  const bookings = await BookingModel.find({
+    workspace: id,
+    date: { $gte: dayStart, $lt: dayEnd },
+    status: { $in: ['pending', 'confirmed'] },
+  })
+    .select('startTime endTime status')
+    .sort({ startTime: 1 });
+
+  res.json({
+    workspace: { _id: workspace._id, name: workspace.name },
+    date: dayStart.toISOString().slice(0, 10),
+    bookings,
+  });
 }
 
 export async function deleteWorkspace(req: Request, res: Response): Promise<void> {

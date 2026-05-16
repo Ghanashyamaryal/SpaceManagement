@@ -475,6 +475,134 @@ For confirming/cancelling.
 
 ---
 
+## 🌐 Public — `/api/public` (no auth)
+
+Endpoints meant for marketing pages, landing site, or anything reachable before login.
+
+### `GET /api/public/branches`
+
+Returns all branches. No filtering, no auth.
+
+```json
+{ "branches": [ { "_id": "...", "name": "...", "city": "...", "imageUrl": "...", "status": "active" } ] }
+```
+
+### `GET /api/public/branches/:id`
+
+Single branch by id.
+
+### `GET /api/public/workspaces`
+
+**Query:** `?branch=<id>&type=<WorkspaceType>` (both optional)
+
+```json
+{ "workspaces": [ {...} ] }
+```
+
+### `GET /api/public/plans`
+
+Returns only `isActive: true` plans, sorted by price ascending.
+
+```json
+{ "plans": [ {...} ] }
+```
+
+---
+
+## 🪑 Workspace availability — `/api/workspaces/:id/availability` 🔒
+
+Returns existing bookings on a given date so the frontend can show occupied time slots.
+
+**Query:** `?date=YYYY-MM-DD` (required)
+
+```json
+// GET /api/workspaces/68abc.../availability?date=2026-05-09
+// Response 200
+{
+  "workspace": { "_id": "68abc...", "name": "Horizon Hot Desk A" },
+  "date": "2026-05-09",
+  "bookings": [
+    { "_id": "...", "startTime": "09:00", "endTime": "11:00", "status": "confirmed" },
+    { "_id": "...", "startTime": "14:00", "endTime": "16:00", "status": "pending" }
+  ]
+}
+```
+
+Only `pending` and `confirmed` bookings are returned (cancelled/completed don't block future bookings).
+
+**Errors:** 400 missing or invalid date, 404 workspace not found.
+
+---
+
+## 📊 Dashboard — `/api/dashboard` 🔒
+
+### `GET /api/dashboard/summary` — superadmin, admin
+
+Aggregated stats. Superadmin sees global numbers; admin sees only their branch.
+
+```json
+// Response 200
+{
+  "scope": "global",                  // or "branch" for admins
+  "bookings": {
+    "total": 142,
+    "thisMonth": 28,
+    "byStatus": { "pending": 5, "confirmed": 18, "cancelled": 2, "completed": 117 }
+  },
+  "revenue": {
+    "thisMonth": 4200,                // sum of amount for confirmed+completed this calendar month
+    "lastMonth": 3850
+  },
+  "members": {
+    "total": 64,                      // users with role='user'
+    "newThisMonth": 7
+  },
+  "occupancy": {
+    "totalWorkspaces": 30,
+    "occupiedToday": 12,              // distinct workspaces booked today
+    "percent": 40                     // rounded
+  }
+}
+```
+
+**Errors:** 400 if admin user has no branch assigned, 403 if role=user.
+
+---
+
+## 📤 Image upload — `/api/upload` 🔒
+
+Requires Cloudinary env vars: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
+
+### `POST /api/upload/image` — superadmin, admin
+
+Multipart form upload. Returns a hosted image URL you then set as `imageUrl` on a Branch or Workspace.
+
+**Request (multipart/form-data):**
+- `image` (required) — the file (max 5 MB, must be `image/*`)
+- `folder` (optional) — one of `branches`, `workspaces`, `avatars` (defaults to `misc`)
+
+```bash
+curl -X POST http://localhost:8080/api/upload/image \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "image=@/path/to/photo.jpg" \
+  -F "folder=branches"
+```
+
+```json
+// Response 201
+{
+  "url": "https://res.cloudinary.com/<cloud>/image/upload/v.../cowork/branches/abc.jpg",
+  "publicId": "cowork/branches/abc",
+  "width": 1600,
+  "height": 900,
+  "format": "jpg"
+}
+```
+
+**Errors:** 400 no file or wrong type, 500 Cloudinary not configured or upload failed.
+
+---
+
 ## Health check
 
 ### `GET /health` (public)
@@ -495,7 +623,7 @@ For uptime pingers (e.g. cron-job.org, UptimeRobot) to keep the service warm on 
 - **Token storage** — store JWT in `localStorage` (simpler) or httpOnly cookie (more secure, requires CORS/credentials setup on backend). Send via `Authorization: Bearer <token>` header.
 - **Token expiry** — 7 days. On any 401 response, redirect to login.
 - **Conditional UI by role** — call `GET /api/auth/me` after login, store `user.role`, hide/show admin pages based on it. Don't trust the frontend role check alone — backend already enforces it.
-- **CORS** — not yet enabled on backend. If your frontend runs on a different port (e.g. Vite on 5173), let the backend team know to add the `cors` middleware.
+- **CORS** — enabled. Default allowed origins: `http://localhost:5173`, `http://localhost:3000`. For production, set `ALLOWED_ORIGINS` env var on the backend to a comma-separated list including your deployed frontend URL.
 - **Error handling** — all errors return `{ "error": "message" }` with a 4xx/5xx status; show error to the user.
 - **Date/time fields on Booking** — `date` is a full ISO date, `startTime`/`endTime` are plain `"HH:mm"` strings.
 - **Dev workflow** — backend dev server at `http://localhost:8080`, hot-reloads on file save (`npm run dev`).
