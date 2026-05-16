@@ -28,7 +28,7 @@ export const DeleteAction = ({
   onSuccess,
   confirmMessage = "This action cannot be undone. This will permanently delete or remove data from our servers.",
   title = "Are you absolutely sure?",
-  className = "h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50",
+  className = "h-8 w-8 text-destructive hover:bg-destructive/10 transition-colors",
   iconClassName = "h-4 w-4",
 }: DeleteActionProps) => {
   const deleteMutation = useMutation({
@@ -63,12 +63,12 @@ export const DeleteAction = ({
           <AlertDialogDescription>{confirmMessage}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="text-blue-600 border-blue-100 hover:bg-blue-50 hover:text-blue-700 transition-colors">
+          <AlertDialogCancel className="text-foreground/70 border-border hover:bg-accent hover:text-foreground transition-colors">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            className="bg-button-primary hover:bg-button-primary/90 text-button-primary-foreground transition-colors"
           >
             Confirm
           </AlertDialogAction>

@@ -29,10 +29,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
           position: absolute;
           bottom: 0;
           left: 0;
-          height: 3px;
+          height: 4px;
           background: var(--primary);
           width: 100%;
-          animation: toast-progress 5s linear forwards;
+          animation: toast-progress 3s linear forwards;
           z-index: 10;
         }
         .cn-toast[data-type="success"]::after { background: hsl(var(--success)); }
@@ -40,7 +40,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         .cn-toast[data-type="info"]::after { background: hsl(var(--info)); }
         .cn-toast[data-type="warning"]::after { background: hsl(var(--warning)); }
         .cn-toast[data-type="loading"]::after { 
-          animation: toast-progress 5s linear forwards;
+          animation: toast-progress 3s linear forwards;
           background: var(--primary); 
         }
       `}</style>
@@ -49,7 +49,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         className="toaster group"
         position="top-right"
         visibleToasts={1}
-        duration={5000}
+        duration={3000}
         icons={{
           success: <CircleCheckIcon className="size-4 text-success" />,
           info: <InfoIcon className="size-4 text-info" />,

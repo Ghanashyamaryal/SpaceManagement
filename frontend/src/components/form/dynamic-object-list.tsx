@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/TextArea";
-import { useFetch } from "@/hooks/queryFn";
-import { queryKey } from "@/lib/types/query-keys";
 import { useEffect } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 import {
@@ -39,11 +37,7 @@ interface ObjectListFieldProps {
   addButtonText?: string;
 }
 
-interface IDepartment {
-  id: number;
-  name: string;
-  companyId: number;
-}
+
 
 const DynamicObjectListField = ({
   form,
@@ -51,20 +45,13 @@ const DynamicObjectListField = ({
   fields: fieldConfigs,
   addButtonText = "+ Add Context Access",
 }: ObjectListFieldProps) => {
-  const { control, register, getValues, watch } = form;
+  const { control, register, getValues } = form;
   const { fields, append, remove } = useFieldArray({
     control,
     name,
   });
 
-  const { data: departmentsData, isLoading: departmentsLoading } = useFetch({
-    path: `/api/${queryKey.DEPARTMENTS}`,
-    queryKey: queryKey.DEPARTMENTS,
-  });
-  const { data: citiesData, isLoading: citiesLoading } = useFetch({
-    path: `/api/${queryKey.CITIES}`,
-    queryKey: queryKey.CITIES,
-  });
+
 
   // Create empty object based on field configurations
   const createEmptyObject = () => {
@@ -101,17 +88,7 @@ const DynamicObjectListField = ({
   return (
     <div className="flex flex-col gap-4">
       {fields.map((field, index) => {
-        const selectedCompany: Number = watch(`${name}.${index}.companyId`);
-        const selectedState = watch(`${name}.${index}.stateId`);
-        const departmentOptions =
-          departmentsData?.data
-            ?.filter(
-              (d: IDepartment) => d.companyId === Number(selectedCompany),
-            )
-            .map((d: IDepartment) => ({
-              value: d.id,
-              label: d.name,
-            })) || [];
+
 
         return (
           <div
@@ -140,25 +117,7 @@ const DynamicObjectListField = ({
                       name={`${name}.${index}.${fieldConfig.key}`}
                       control={form.control}
                       render={({ field }) => {
-                        let options = fieldConfig.options;
-                        if (
-                          fieldConfig.key === "departmentId" &&
-                          !departmentsLoading
-                        ) {
-                          options = departmentOptions;
-                        }
-                        if (fieldConfig.key === "cityId" && !citiesLoading) {
-                          options =
-                            citiesData?.data
-                              ?.filter(
-                                (city: any) =>
-                                  city.stateId === Number(selectedState),
-                              )
-                              .map((city: any) => ({
-                                value: city.id,
-                                label: city.name,
-                              })) || [];
-                        }
+                        const options = fieldConfig.options;
                         return (
                           <Select
                             value={field.value ?? undefined}
@@ -194,25 +153,7 @@ const DynamicObjectListField = ({
                       name={`${name}.${index}.${fieldConfig.key}`}
                       control={form.control}
                       render={({ field }) => {
-                        let options = fieldConfig.options;
-                        if (
-                          fieldConfig.key === "departmentId" &&
-                          !departmentsLoading
-                        ) {
-                          options = departmentOptions;
-                        }
-                        if (fieldConfig.key === "cityId" && !citiesLoading) {
-                          options =
-                            citiesData?.data
-                              ?.filter(
-                                (city: any) =>
-                                  city.stateId === Number(selectedState),
-                              )
-                              .map((city: any) => ({
-                                value: city.id,
-                                label: city.name,
-                              })) || [];
-                        }
+                        const options = fieldConfig.options;
                         const normalizedOptions = (options || []).map((o) => ({
                           value: String(o.value),
                           label: o.label,

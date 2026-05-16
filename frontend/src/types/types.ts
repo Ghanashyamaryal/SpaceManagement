@@ -2,7 +2,7 @@ export interface UserData {
   name: string;
   email: string;
   image?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface PaymentCouponData {
@@ -274,6 +274,6 @@ export interface MediaData {
 
 export interface PieChartProps {
   isAnimationActive?: boolean;
-  data: any[];
+  data: unknown[];
   colors?: string[];
 }

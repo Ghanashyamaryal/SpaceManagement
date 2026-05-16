@@ -22,13 +22,13 @@ interface PageHeaderProps {
   createLabel?: string;
 }
 
-export const PageHeader = ({ 
-  title, 
-  description, 
+export const PageHeader = ({
+  title,
+  description,
   icon,
-  breadcrumbs, 
-  className, 
-  action, 
+  breadcrumbs,
+  className,
+  action,
   topAction,
   createPath,
   createLabel
@@ -44,7 +44,7 @@ export const PageHeader = ({
   return (
     <div className={cn("flex flex-col gap-6 mb-10", className)}>
       {topAction && <div className="flex items-center -mb-2">{topAction}</div>}
-      
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start gap-4">
           {icon && (

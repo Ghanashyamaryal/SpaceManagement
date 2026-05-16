@@ -1,23 +1,26 @@
-// import { useAuth } from "@/context/authcontext";
-// import Layout from "@/layout/layout";
-// import { Navigate, useLocation } from "react-router-dom";
-// import Loading from "@/common/extra/loading";
+import { useAuth } from "@/context/authcontext";
+import Layout from "@/layout/layout";
+import { Navigate, useLocation } from "react-router-dom";
+import Loading from "@Components/common/Loading";
 
-// const GlobalProtectedRoute = () => {
-// 	const { isLoggedIn, isInitialized, isLoading } = useAuth();
-// 	const location = useLocation();
+const GlobalProtectedRoute = () => {
+  const { isLoggedIn, isLoading } = useAuth();
+  const location = useLocation();
 
-// 	// Show loading spinner while checking authentication
-// 	if (!isInitialized || isLoading) {
-// 		return <Loading />;
-// 	}
+  if (isLoading) {
+    return <Loading />;
+  }
 
-// 	// Redirect to login and save current location
-// 	if (!isLoggedIn) {
-// 		return <Navigate to="/login" replace state={{ from: location }} />;
-// 	}
+  // Allow auth pages to stay on login/signup without being protected here
+  const isAuthPage = ["/login", "/signup", "/forget-password"].includes(location.pathname);
+  if (isAuthPage) {
+    return null; // Return null so it doesn't render anything, allowing other sibling routes to match
+  }
 
-// 	return <Layout />;
-// };
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+  return <Layout />;
+};
 
-// export default GlobalProtectedRoute;
+export default GlobalProtectedRoute;

@@ -16,13 +16,10 @@
     "jsx": "react-jsx",
     "rootDir": "./src",
 
-      "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
-
     "paths": {
       "@/*": ["./src/*"],
       "@Components/*": ["./src/components/*"],
-      "@Utils/*": ["src/lib/utils/*"],
+      "@Utils/*": ["./src/lib/utils/*"],
       "@Assets/*": ["./src/assets/*"],
       "@Hooks/*": ["./src/hooks/*"],
       "@Styles/*": ["./src/styles/*"],
@@ -33,7 +30,6 @@
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]

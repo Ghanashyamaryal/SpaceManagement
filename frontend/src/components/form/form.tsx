@@ -100,7 +100,6 @@ type CreateFormProps = {
   onFieldChange?: (name: string, value: any) => void;
   validationSchema: any;
   title1?: string;
-  titleLink1?: string;
   hideSectiontitle?: boolean;
   titleLink2?: string;
   isSubmitting?: boolean;
@@ -190,7 +189,6 @@ export function FormComponent({
   onFieldChange,
   validationSchema,
   title1 = "",
-  titleLink1 = "",
   isSubmitting,
   heading1,
   submitClassName,

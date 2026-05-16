@@ -1,43 +1,105 @@
-"use client"
+import Error from "@Components/common/Error";
+import Loading from "@Components/common/Loading";
+import NotFound from "@Components/common/NotFound";
+import React, { lazy, Suspense } from "react";
+import type { RouteObject } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./context/authcontext";
+import AuthLayout from "./layout/authlayout";
+import AdminProtectedRoute from "./routes/adminProtected.route";
+import GlobalProtectedRoute from "./routes/globalProtected.route";
+import PublicRoute from "./routes/public.route";
+import { Toaster } from "@Components/ui/Sonner";
+import { userRoutes } from "./routes/routes";
 
-import "@/lib/i18n"
+const LoginForm = lazy(() => import("./auth/login"));
+const SignupForm = lazy(() => import("./auth/signup"));
 
-import { useTranslation } from "react-i18next"
-import { LanguageToggle } from "@/components/common/LanguageToggle"
+const withSuspense = (Component: React.ComponentType) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+);
 
-function App() {
-  const { t, i18n } = useTranslation()
+const authRoutes: RouteObject[] = [
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/login",
+        element: withSuspense(LoginForm),
+      },
+      {
+        path: "/signup",
+        element: withSuspense(SignupForm),
+      },
+      {
+        index: true,
+        element: <Navigate to="/login" replace />,
+      }
+    ],
+  },
+];
 
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      
-      {/* Top-right toggle */}
-      <div className="flex justify-end p-4">
-        <LanguageToggle />
-      </div>
+const adminOnlyRoutes: RouteObject[] = [
+  {
+    element: <AdminProtectedRoute />,
+    children: [
+      {
+        path: "/",
+        element: <Navigate to="/dashboard" replace />,
+      },
+      ...userRoutes,
+      // ...caregiverRoutes,
+      // ...visitLogRoutes,
+      // ...consumerRoutes,
+      // ...AssignmentcaregiverRoutes,
+      // ...cityManagementRoutes,
+      // ...companyManagementRoutes,
+      // ...DepartmentManagementRoutes,
+      // ...reportRoutes,
+      // ...stateManagementRoutes,
+      // ...auditLogRoutes,
+      // ...insuranceProviderRoutes,
+      // ...rolesRoutes,
+      // ...messagingRoutes,
+      // ...billedHoursRoutes,
+      // ...hoursUtilizationRoutes,
+    ],
+  },
+];
 
-      <div className="flex flex-col items-center justify-center gap-6">
-        <h1 className="text-2xl font-bold">
-          {t("welcome")}
-        </h1>
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <AuthProvider>
+        <Toaster />
+        <Outlet />
+      </AuthProvider>
+    ),
+    errorElement: <Error />,
+    children: [
+      {
+        // Public routes branch first to avoid intercepting login by GlobalProtectedRoute
+        element: <PublicRoute />,
+        children: authRoutes,
+      },
+      {
+        // Protected routes branch second
+        element: <GlobalProtectedRoute />,
+        children: adminOnlyRoutes,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+    ],
+  },
+]);
 
-        <p className="text-muted-foreground">
-          Current Language: {i18n.language}
-        </p>
+const App = () => {
+  return <RouterProvider router={router} />;
+};
 
-        <div className="flex gap-4 mt-4">
-          <button className="px-4 py-2 bg-primary text-primary-foreground rounded">
-            {t("auth:login")}
-          </button>
-
-          <button className="px-4 py-2 bg-destructive text-white rounded">
-            {t("auth:logout")}
-          </button>
-        </div>
-      </div>
-
-    </div>
-  )
-}
-
-export default App
+export default App;

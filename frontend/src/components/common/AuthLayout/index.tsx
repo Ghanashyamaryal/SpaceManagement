@@ -21,9 +21,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const { logout, isLoading } = useLogout();
 
-  async function logoutUser(
-    event: React.MouseEvent<HTMLDivElement>,
-  ): Promise<void> {
+  async function logoutUser(): Promise<void> {
     try {
       await logout();
       navigate("/login");

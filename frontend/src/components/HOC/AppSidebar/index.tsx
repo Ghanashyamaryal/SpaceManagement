@@ -8,8 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@Components/index";
-import { useSidebar } from "@Components/ui/Sidebar";
+  SidebarRail,
+  useSidebar,
+} from "@Components/ui/Sidebar"; // Changed to direct import to avoid ambiguity if index.ts exists elsewhere
 import { Building2, ChevronRight, Home } from "lucide-react";
 import React, { useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -17,11 +18,11 @@ import { Link, useLocation } from "react-router-dom";
 interface ItemsType {
   title: string;
   url: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType;
   dropdown?: {
     title: string;
     url: string;
-    icon: React.ComponentType<any>;
+    icon: React.ComponentType;
     notify?: number;
   }[];
   notify?: number;
@@ -30,7 +31,7 @@ interface ItemsType {
 
 export function AppSidebar() {
   const pathname = useLocation().pathname;
-  const { toggleSidebar } = useSidebar();
+  const { state } = useSidebar();
 
   const [openDropdowns, setOpenDropdowns] = React.useState<boolean[]>([]);
 
@@ -67,12 +68,12 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className="h-screen">
+    <Sidebar className="h-screen" collapsible="icon">
       <SidebarContent className="sidebar-content">
         <SidebarGroup>
           <SidebarGroupLabel className="p-4 flex items-center h-20 justify-center sticky top-2 bg-sidebar z-20 border-b border-sidebar-border">
             <div className="text-lg font-semibold text-sidebar-foreground">
-              LMS
+              {state === "collapsed" ? "L" : "LMS"}
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent className="flex flex-col gap-2 p-2">
@@ -90,7 +91,9 @@ export function AppSidebar() {
                             : "text-sidebar-foreground hover:bg-sidebar-accent/10"
                         } rounded-lg transition-colors`}
                       >
-                        <item.icon className="h-5 w-5 mr-2" />
+                        <div className="h-5 w-5 mr-2">
+                          <item.icon />
+                        </div>
                         {item.title}
                         {item?.dropdown?.some(
                           (subItem) => subItem.notify && subItem.notify > 0,
@@ -107,7 +110,7 @@ export function AppSidebar() {
                       </SidebarMenuButton>
                       {openDropdowns[idx] && (
                         <SidebarMenu className="mt-2">
-                          {item.dropdown.map((subItem: any) => (
+                          {item.dropdown.map((subItem) => (
                             <SidebarMenuItem key={subItem.title}>
                               <Link to={subItem.url}>
                                 <SidebarMenuButton
@@ -119,7 +122,7 @@ export function AppSidebar() {
                                   } rounded-lg transition-colors justify-between`}
                                 >
                                   <span className="flex items-center">
-                                    <subItem.icon className="h-5 w-5 mr-2" />
+                                    <subItem.icon />
                                     {subItem.title}
                                   </span>
                                   {subItem?.notify && subItem.notify > 0 ? (
@@ -145,7 +148,8 @@ export function AppSidebar() {
                         } rounded-lg transition-colors justify-between`}
                       >
                         <span className="flex items-center gap-2">
-                          <item.icon className="h-4 w-4 mr-2" />
+                          {/* <div className="h-5 w-5 mr-2"> */}
+                          <item.icon />
                           {item.title}
                         </span>
                         {item?.notify && item.notify > 0 ? (
@@ -164,9 +168,10 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border p-4 flex items-center justify-center">
         <div className="text-sm font-semibold text-sidebar-foreground">
-          LMS-v1
+          {state === "collapsed" ? "V1" : "LMS-v1"}
         </div>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

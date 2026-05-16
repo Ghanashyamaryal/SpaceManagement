@@ -3,19 +3,19 @@ import { Outlet } from "react-router-dom";
 // import Loading from "@/common/extra/loading";
 
 const PublicRoute = () => {
-	// const { isLoggedIn, isInitialized, isLoading } = useAuth();
+  // const { isLoggedIn, isInitialized, isLoading } = useAuth();
 
-	// // Show loading spinner while checking authentication
-	// if (!isInitialized || isLoading) {
-	// 	return <Loading />;
-	// }
+  // // Show loading spinner while checking authentication
+  // if (!isInitialized || isLoading) {
+  // 	return <Loading />;
+  // }
 
-	// // Redirect to dashboard if already authenticated
-	// if (isLoggedIn) {
-	// 	return <Navigate to="/" replace />;
-	// }
+  // // Redirect to dashboard if already authenticated
+  // if (isLoggedIn) {
+  // 	return <Navigate to="/" replace />;
+  // }
 
-	return <Outlet />;
+  return <Outlet />;
 };
 
 export default PublicRoute;
