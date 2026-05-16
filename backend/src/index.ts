@@ -1,7 +1,9 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
+import { openapiSpec } from './openapi.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import branchRoutes from './routes/branches.js';
@@ -36,6 +38,19 @@ app.get('/', (_req, res) => {
 app.get('/health', (_req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
+
+app.get('/openapi.json', (_req, res) => {
+  res.json(openapiSpec);
+});
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(openapiSpec as unknown as object, {
+    customSiteTitle: 'CoWork API Docs',
+    swaggerOptions: { persistAuthorization: true },
+  })
+);
 
 app.use('/api/public', publicRoutes);
 app.use('/api/auth', authRoutes);
