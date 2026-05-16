@@ -16,6 +16,10 @@ app.get('/', (_req, res) => {
   res.send('Hello World');
 });
 
+app.get('/health', (_req, res) => {
+  res.json({ ok: true, uptime: process.uptime() });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/branches', branchRoutes);
