@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { WorkspaceModel } from '../models/Workspace.js';
-import { BranchModel } from '../models/Branch.js';
-import { BookingModel } from '../models/Booking.js';
+import { WorkspaceModel } from '../../models/Workspace.js';
+import { BranchModel } from '../../models/Branch.js';
+import { BookingModel } from '../../models/Booking.js';
 
 export async function createWorkspace(req: Request, res: Response): Promise<void> {
   const actor = req.user!;

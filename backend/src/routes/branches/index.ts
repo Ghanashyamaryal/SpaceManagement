@@ -5,9 +5,9 @@ import {
   getBranch,
   updateBranch,
   deleteBranch,
-} from '../controllers/branchController.js';
-import { requireAuth } from '../middleware/auth.js';
-import { requireRole } from '../middleware/requireRole.js';
+} from '../../controllers/branch/index.js';
+import { requireAuth } from '../../middleware/auth.js';
+import { requireRole } from '../../middleware/requireRole.js';
 
 const router = Router();
 

@@ -6,8 +6,8 @@ import {
   forgotPassword,
   resetPassword,
   changePassword,
-} from '../controllers/authController.js';
-import { requireAuth } from '../middleware/auth.js';
+} from '../../controllers/auth/index.js';
+import { requireAuth } from '../../middleware/auth.js';
 
 const router = Router();
 

@@ -6,9 +6,9 @@ import {
   getWorkspaceAvailability,
   updateWorkspace,
   deleteWorkspace,
-} from '../controllers/workspaceController.js';
-import { requireAuth } from '../middleware/auth.js';
-import { requireRole } from '../middleware/requireRole.js';
+} from '../../controllers/workspace/index.js';
+import { requireAuth } from '../../middleware/auth.js';
+import { requireRole } from '../../middleware/requireRole.js';
 
 const router = Router();
 

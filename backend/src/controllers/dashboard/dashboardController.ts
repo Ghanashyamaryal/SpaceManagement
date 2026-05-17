@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { BookingModel } from '../models/Booking.js';
-import { UserModel } from '../models/User.js';
-import { WorkspaceModel } from '../models/Workspace.js';
+import { BookingModel } from '../../models/Booking.js';
+import { UserModel } from '../../models/User.js';
+import { WorkspaceModel } from '../../models/Workspace.js';
 
 function startOfMonth(d: Date): Date {
   const x = new Date(d);

@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { UserModel } from '../models/User.js';
-import { hashPassword, verifyPassword } from '../utils/hash.js';
-import { signToken } from '../utils/jwt.js';
-import { generateResetToken, hashResetToken } from '../utils/resetToken.js';
+import { UserModel } from '../../models/User.js';
+import { hashPassword, verifyPassword } from '../../utils/hash.js';
+import { signToken } from '../../utils/jwt.js';
+import { generateResetToken, hashResetToken } from '../../utils/resetToken.js';
 
 const PASSWORD_MIN = 8;
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000;

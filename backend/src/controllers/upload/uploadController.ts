@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { cloudinary } from '../config/cloudinary.js';
-import { env } from '../config/env.js';
+import { cloudinary } from '../../config/cloudinary.js';
+import { env } from '../../config/env.js';
 
 const ALLOWED_FOLDERS = new Set(['branches', 'workspaces', 'avatars']);
 
