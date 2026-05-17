@@ -12,11 +12,14 @@ export function useMutation({ method = "POST", onSuccess, onError }: MutationOpt
 
   const mutate = async ({ path, data }: { path: string; data?: any }) => {
     setIsLoading(true);
+    const token = localStorage.getItem("token");
+    
     try {
       const response = await fetch(path, {
         method,
         headers: {
           "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
         },
         body: data ? JSON.stringify(data) : undefined,
       });
@@ -24,7 +27,7 @@ export function useMutation({ method = "POST", onSuccess, onError }: MutationOpt
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Mutation failed");
+        throw new Error(result.error || result.message || "Mutation failed");
       }
 
       if (onSuccess) onSuccess(result);

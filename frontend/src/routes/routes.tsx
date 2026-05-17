@@ -6,6 +6,8 @@ import type { RouteObject } from "react-router-dom";
 const Dashboard = lazy(() => import("@/pages/dashboard/dashboard"));
 const ManageSpace = lazy(() => import("@/pages/manage-space/manage-space"));
 const ManageSpaceRead = lazy(() => import("@/pages/manage-space/read"));
+const BranchManagement = lazy(() => import("@/pages/branch/branch"));
+const BranchRead = lazy(() => import("@/pages/branch/read"));
 
 
 
@@ -34,15 +36,15 @@ export const manageSpaceRoutes: RouteObject[] = [
   // },
 ];
 
-// export const visitLogRoutes: RouteObject[] = [
-//   {
-//     path: "/visit",
-//     element: withSuspense(Visit),
-//   },
-//   {
-//     path: "/visit/read/:id",
-//     element: withSuspense(VisitDetails),
-//   },
-// ];
+export const branchRoutes: RouteObject[] = [
+  {
+    path: "/branches",
+    element: withSuspense(BranchManagement),
+  },
+  {
+    path: "/branches/read/:id",
+    element: withSuspense(BranchRead),
+  },
+];
 
 

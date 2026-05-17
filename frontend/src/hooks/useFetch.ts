@@ -10,11 +10,23 @@ export function useFetch<T = unknown>(url: string) {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true)
-      const res = await fetch(url)
+      const token = localStorage.getItem("token")
+      
+      const res = await fetch(url, {
+        headers: {
+          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+        }
+      })
+      
       const json = await res.json()
+      
+      if (!res.ok) {
+        throw new Error(json.error || json.message || "Fetch failed")
+      }
+      
       setData(json)
-    } catch (err) {
-      setError("Failed to fetch")
+    } catch (err: any) {
+      setError(err.message || "Failed to fetch")
     } finally {
       setLoading(false)
     }
