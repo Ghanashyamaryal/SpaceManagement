@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { BranchModel } from '../../models/Branch.js';
-import { WorkspaceModel } from '../../models/Workspace.js';
-import { PlanModel } from '../../models/Plan.js';
+import { BranchModel } from '../../models/branch/index.js';
+import { WorkspaceModel } from '../../models/workspace/index.js';
+import { PlanModel } from '../../models/plan/index.js';
 
 const router = Router();
 

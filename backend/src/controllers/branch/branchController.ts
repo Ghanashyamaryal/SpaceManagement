@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { BranchModel } from '../../models/Branch.js';
+import { BranchModel } from '../../models/branch/index.js';
 
 export async function createBranch(req: Request, res: Response): Promise<void> {
   const { name, address, city, phone, email, operatingHours, imageUrl, status } = req.body ?? {};

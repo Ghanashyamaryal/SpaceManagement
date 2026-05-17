@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { UserModel } from '../../models/User.js';
+import { UserModel } from '../../models/user/index.js';
 import { hashPassword, verifyPassword } from '../../utils/hash.js';
 import { signToken } from '../../utils/jwt.js';
 import { generateResetToken, hashResetToken } from '../../utils/resetToken.js';
