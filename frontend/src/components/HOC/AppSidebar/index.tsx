@@ -77,9 +77,13 @@ export function AppSidebar() {
       <SidebarContent className="sidebar-content">
         <SidebarGroup>
           <SidebarGroupLabel className="p-4 flex items-center h-20 justify-center sticky top-2 bg-sidebar z-20 border-b border-sidebar-border">
-            <div className="text-lg font-semibold text-sidebar-foreground">
-              {state === "collapsed" ? "L" : "LMS"}
-            </div>
+            <Link to="/dashboard" className="flex items-center justify-center w-full h-full">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className={state === "collapsed" ? "h-10 w-10 object-contain" : "h-16 w-auto object-contain"}
+              />
+            </Link>
           </SidebarGroupLabel>
           <SidebarGroupContent className="flex flex-col gap-2 p-2">
             <SidebarMenu>
@@ -90,11 +94,10 @@ export function AppSidebar() {
                       <SidebarMenuButton
                         onClick={() => handleDropdownToggle(idx)}
                         isActive={isActive(item.url)}
-                        className={`${
-                          isActive(item.url)
-                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent/10"
-                        } rounded-lg transition-colors`}
+                        className={`${isActive(item.url)
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent/10"
+                          } rounded-lg transition-colors`}
                       >
                         <div className="h-5 w-5 mr-2">
                           <item.icon />
@@ -108,9 +111,8 @@ export function AppSidebar() {
                           " "
                         )}
                         <ChevronRight
-                          className={`h-5 w-5 ml-auto transition-transform ${
-                            openDropdowns[idx] ? "rotate-90" : ""
-                          }`}
+                          className={`h-5 w-5 ml-auto transition-transform ${openDropdowns[idx] ? "rotate-90" : ""
+                            }`}
                         />
                       </SidebarMenuButton>
                       {openDropdowns[idx] && (
@@ -120,11 +122,10 @@ export function AppSidebar() {
                               <Link to={subItem.url}>
                                 <SidebarMenuButton
                                   isActive={isActive(subItem.url)}
-                                  className={`${
-                                    isActive(subItem.url)
-                                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                                      : "text-sidebar-foreground hover:bg-sidebar-accent/10"
-                                  } rounded-lg transition-colors justify-between`}
+                                  className={`${isActive(subItem.url)
+                                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                                    : "text-sidebar-foreground hover:bg-sidebar-accent/10"
+                                    } rounded-lg transition-colors justify-between`}
                                 >
                                   <span className="flex items-center">
                                     <subItem.icon />
@@ -146,11 +147,10 @@ export function AppSidebar() {
                     <Link to={item.url} key={idx}>
                       <SidebarMenuButton
                         isActive={isActive(item.url)}
-                        className={`${
-                          isActive(item.url)
-                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent/10"
-                        } rounded-lg transition-colors justify-between`}
+                        className={`${isActive(item.url)
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent/10"
+                          } rounded-lg transition-colors justify-between`}
                       >
                         <span className="flex items-center gap-2">
                           {/* <div className="h-5 w-5 mr-2"> */}
