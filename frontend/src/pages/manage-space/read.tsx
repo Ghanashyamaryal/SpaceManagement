@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/Dialog";
 import { useFetch } from "@/hooks/queryFn";
-import { ArrowLeft, Calendar, FileText, SquarePen, Building2, Users, Layers } from "lucide-react";
+import { ArrowLeft, Calendar, FileText, SquarePen, Building2, Users, Layers, ExternalLink, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UpdateWorkspace from "./update";
@@ -179,6 +179,18 @@ export default function ReadWorkspace() {
                     : "N/A"}
                 </p>
               </div>
+              {workspace.imageUrl && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground/60 text-[10px] font-bold uppercase tracking-[0.15em]">
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    Image Link
+                  </div>
+                  <a href={workspace.imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-medium text-sm flex items-center gap-1.5 w-fit">
+                    View Image
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

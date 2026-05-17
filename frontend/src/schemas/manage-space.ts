@@ -11,7 +11,7 @@ export const workspaceSchema = yup.object().shape({
     pricePerDay: yup.number().typeError('Price must be a number').min(0).default(0),
     pricePerMonth: yup.number().typeError('Price must be a number').min(0).default(0),
     description: yup.string().optional(),
-    imageUrl: yup.string().optional(),
+    imageUrl: yup.mixed().optional(),
 });
 
 export type WorkspaceFormValues = yup.InferType<typeof workspaceSchema>;

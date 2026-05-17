@@ -7,7 +7,7 @@ export const branchSchema = yup.object().shape({
   phone: yup.string().optional(),
   email: yup.string().email('Invalid email').optional(),
   operatingHours: yup.string().optional(),
-  imageUrl: yup.string().optional(),
+  imageUrl: yup.mixed().optional(),
   status: yup.string().oneOf(['active', 'inactive']).default('active'),
 });
 

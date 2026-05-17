@@ -79,8 +79,8 @@ export const workspaceFields: Field[] = [
   },
   {
     name: "imageUrl",
-    label: "Image URL",
-    type: "text",
-    placeholder: "Enter image URL",
+    label: "Workspace Image",
+    type: "file",
+    accept: "image/*",
   },
 ];

@@ -15,7 +15,9 @@ import {
   SquarePen, 
   Phone, 
   Mail, 
-  Clock
+  Clock,
+  ExternalLink,
+  Image as ImageIcon
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -187,6 +189,18 @@ export default function ReadBranch() {
                     : "N/A"}
                 </p>
               </div>
+              {branch.imageUrl && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground/60 text-[10px] font-bold uppercase tracking-[0.15em]">
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    Image Link
+                  </div>
+                  <a href={branch.imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-medium text-sm flex items-center gap-1.5 w-fit">
+                    View Image
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

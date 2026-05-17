@@ -1,5 +1,4 @@
 import { useAuth } from "@/context/authcontext";
-import { toast } from "sonner";
 import { ThemeToggle } from "@Components/common/ThemeToggle";
 import { AppSidebar } from "@Components/HOC/AppSidebar";
 import {
@@ -16,6 +15,7 @@ import {
   SidebarTrigger,
 } from "@Components/index";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Layout() {
       await logout();
       toast.success("Logged out successfully");
       navigate("/login");
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -88,7 +88,7 @@ export default function Layout() {
             </DropdownMenu>
           </div>
         </div>
-        <div className="p-4 md:p-8">
+        <div >
           <Outlet />
         </div>
       </main>

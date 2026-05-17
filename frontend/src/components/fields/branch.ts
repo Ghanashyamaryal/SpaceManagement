@@ -44,8 +44,9 @@ export const branchFields: Field[] = [
     ],
   },
   {
-    name: "attachment",
+    name: "imageUrl",
     label: "Branch Image",
     type: "file",
+    accept: "image/*",
   },
 ];

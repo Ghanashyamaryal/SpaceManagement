@@ -24,9 +24,27 @@ export default function CreateBranch({ onSuccess, onCancel }: CreateBranchProps)
 
   const handleFormSubmit = async (data: any) => {
     try {
-      await createMutation.mutate({ path: "/api/branches", data });
-    } catch (error) {
+      let submitData = { ...data };
+      if (submitData.imageUrl instanceof File) {
+        const formData = new FormData();
+        formData.append("image", submitData.imageUrl);
+        formData.append("folder", "branches");
+        const token = localStorage.getItem("token");
+        const res = await fetch("/api/upload/image", {
+          method: "POST",
+          headers: {
+            ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+          },
+          body: formData,
+        });
+        if (!res.ok) throw new Error("Failed to upload image");
+        const json = await res.json();
+        submitData.imageUrl = json.url;
+      }
+      await createMutation.mutate({ path: "/api/branches", data: submitData });
+    } catch (error: any) {
       console.error("Error creating branch:", error);
+      toast.error(error.message || "Failed to process request");
     }
   };
 
