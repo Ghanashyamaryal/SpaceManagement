@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { BookingModel, BOOKING_STATUSES, type BookingStatus } from '../models/Booking.js';
-import { WorkspaceModel } from '../models/Workspace.js';
+import { BookingModel, BOOKING_STATUSES, type BookingStatus } from '../../models/booking/index.js';
+import { WorkspaceModel } from '../../models/workspace/index.js';
 
 export async function createBooking(req: Request, res: Response): Promise<void> {
   const actor = req.user!;

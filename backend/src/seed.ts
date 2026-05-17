@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
-import { UserModel } from './models/User.js';
+import { UserModel } from './models/user/index.js';
 import { hashPassword } from './utils/hash.js';
 
 async function seed(): Promise<void> {

@@ -5,9 +5,9 @@ import {
   getPlan,
   updatePlan,
   deletePlan,
-} from '../controllers/planController.js';
-import { requireAuth } from '../middleware/auth.js';
-import { requireRole } from '../middleware/requireRole.js';
+} from '../../controllers/plan/index.js';
+import { requireAuth } from '../../middleware/auth.js';
+import { requireRole } from '../../middleware/requireRole.js';
 
 const router = Router();
 

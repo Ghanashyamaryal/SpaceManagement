@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { PlanModel } from '../models/Plan.js';
+import { PlanModel } from '../../models/plan/index.js';
 
 export async function createPlan(req: Request, res: Response): Promise<void> {
   const { name, type, price, durationDays } = req.body ?? {};

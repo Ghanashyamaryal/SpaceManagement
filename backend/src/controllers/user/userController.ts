@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { UserModel, ROLES, type Role } from '../models/User.js';
-import { BranchModel } from '../models/Branch.js';
-import { hashPassword } from '../utils/hash.js';
+import { UserModel, ROLES, type Role } from '../../models/user/index.js';
+import { BranchModel } from '../../models/branch/index.js';
+import { hashPassword } from '../../utils/hash.js';
 
 export async function createUser(req: Request, res: Response): Promise<void> {
   const { name, email, password, role, branch, phone } = req.body ?? {};

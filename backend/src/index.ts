@@ -4,15 +4,15 @@ import swaggerUi from 'swagger-ui-express';
 import { env } from './config/env.js';
 import { connectDB } from './config/db.js';
 import { openapiSpec } from './openapi.js';
-import authRoutes from './routes/auth.js';
-import userRoutes from './routes/users.js';
-import branchRoutes from './routes/branches.js';
-import workspaceRoutes from './routes/workspaces.js';
-import planRoutes from './routes/plans.js';
-import bookingRoutes from './routes/bookings.js';
-import publicRoutes from './routes/public.js';
-import dashboardRoutes from './routes/dashboard.js';
-import uploadRoutes from './routes/upload.js';
+import authRoutes from './routes/auth/index.js';
+import userRoutes from './routes/users/index.js';
+import branchRoutes from './routes/branches/index.js';
+import workspaceRoutes from './routes/workspaces/index.js';
+import planRoutes from './routes/plans/index.js';
+import bookingRoutes from './routes/bookings/index.js';
+import publicRoutes from './routes/public/index.js';
+import dashboardRoutes from './routes/dashboard/index.js';
+import uploadRoutes from './routes/upload/index.js';
 
 const app = express();
 
