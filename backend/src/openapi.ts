@@ -17,6 +17,7 @@ export const openapiSpec = {
     { name: 'Workspaces', description: 'Bookable spaces within a branch' },
     { name: 'Plans', description: 'Subscription plans / pricing tiers' },
     { name: 'Bookings', description: 'Workspace reservations' },
+    { name: 'Events', description: 'Community events (networking, workshops, etc.)' },
     { name: 'Public', description: 'Unauthenticated endpoints for marketing pages' },
     { name: 'Dashboard', description: 'Aggregated stats for admin / superadmin' },
     { name: 'Upload', description: 'Image upload to Cloudinary' },
@@ -61,6 +62,38 @@ export const openapiSpec = {
         enum: ['daily', 'weekly', 'monthly', 'corporate'],
       },
       BranchStatus: { type: 'string', enum: ['active', 'inactive'] },
+      EventType: {
+        type: 'string',
+        enum: ['networking', 'workshop', 'startup_pitch', 'tech_meetup', 'training', 'other'],
+      },
+      EventStatus: {
+        type: 'string',
+        enum: ['upcoming', 'ongoing', 'completed', 'cancelled'],
+      },
+      Event: {
+        type: 'object',
+        required: ['title', 'date'],
+        properties: {
+          _id: { type: 'string' },
+          title: { type: 'string' },
+          description: { type: 'string' },
+          event_type: { $ref: '#/components/schemas/EventType' },
+          branch_id: { type: 'string', nullable: true },
+          branch_name: { type: 'string' },
+          date: { type: 'string', format: 'date' },
+          start_time: { type: 'string', example: '09:00' },
+          end_time: { type: 'string', example: '17:00' },
+          capacity: { type: 'number' },
+          registered_count: { type: 'number' },
+          image_url: { type: 'string' },
+          status: { $ref: '#/components/schemas/EventStatus' },
+          attendees: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'List of user emails registered',
+          },
+        },
+      },
       User: {
         type: 'object',
         properties: {
@@ -607,6 +640,79 @@ export const openapiSpec = {
         summary: 'Delete booking',
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
         responses: { '204': { description: 'Deleted' } },
+      },
+    },
+    '/api/events': {
+      get: {
+        tags: ['Events'],
+        summary: 'List events (admin scoped to own branch)',
+        parameters: [
+          { in: 'query', name: 'branch_id', schema: { type: 'string' } },
+          { in: 'query', name: 'event_type', schema: { $ref: '#/components/schemas/EventType' } },
+          { in: 'query', name: 'status', schema: { $ref: '#/components/schemas/EventStatus' } },
+        ],
+        responses: { '200': { description: 'OK' } },
+      },
+      post: {
+        tags: ['Events'],
+        summary: 'Create event (admin/superadmin)',
+        requestBody: {
+          required: true,
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/Event' } } },
+        },
+        responses: { '201': { description: 'Created' } },
+      },
+    },
+    '/api/events/{id}': {
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+      get: { tags: ['Events'], summary: 'Get event', responses: { '200': { description: 'OK' } } },
+      patch: {
+        tags: ['Events'],
+        summary: 'Update event (admin/superadmin)',
+        requestBody: {
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/Event' } } },
+        },
+        responses: { '200': { description: 'OK' } },
+      },
+      delete: {
+        tags: ['Events'],
+        summary: 'Delete event (admin/superadmin)',
+        responses: { '204': { description: 'Deleted' } },
+      },
+    },
+    '/api/events/{id}/register': {
+      parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+      post: {
+        tags: ['Events'],
+        summary: 'Register current user for an event',
+        responses: { '200': { description: 'Registered' }, '409': { description: 'Already registered' } },
+      },
+      delete: {
+        tags: ['Events'],
+        summary: 'Unregister current user from an event',
+        responses: { '200': { description: 'Unregistered' } },
+      },
+    },
+    '/api/public/events': {
+      get: {
+        tags: ['Public'],
+        summary: 'List public events (no auth)',
+        security: [],
+        parameters: [
+          { in: 'query', name: 'branch_id', schema: { type: 'string' } },
+          { in: 'query', name: 'event_type', schema: { $ref: '#/components/schemas/EventType' } },
+          { in: 'query', name: 'status', schema: { $ref: '#/components/schemas/EventStatus' } },
+        ],
+        responses: { '200': { description: 'OK' } },
+      },
+    },
+    '/api/public/events/{id}': {
+      get: {
+        tags: ['Public'],
+        summary: 'Get public event (no auth)',
+        security: [],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { '200': { description: 'OK' }, '404': { description: 'Not found' } },
       },
     },
     '/api/public/branches': {

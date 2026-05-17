@@ -10,6 +10,7 @@ import branchRoutes from './routes/branches/index.js';
 import workspaceRoutes from './routes/workspaces/index.js';
 import planRoutes from './routes/plans/index.js';
 import bookingRoutes from './routes/bookings/index.js';
+import eventRoutes from './routes/events/index.js';
 import publicRoutes from './routes/public/index.js';
 import dashboardRoutes from './routes/dashboard/index.js';
 import uploadRoutes from './routes/upload/index.js';
@@ -59,6 +60,7 @@ app.use('/api/branches', branchRoutes);
 app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/plans', planRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/events', eventRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/upload', uploadRoutes);
 
