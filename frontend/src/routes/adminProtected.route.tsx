@@ -19,9 +19,8 @@ const AdminProtectedRoute = () => {
   }
 
   if
-    (userRole === Role.CITYADMIN ||
-     userRole === Role.SUPERADMIN || 
-     userRole === Role.STATEADMIN)
+    (userRole === Role.ADMIN ||
+     userRole === Role.SUPERADMIN)
     {
     if (userRole === Role.SUPERADMIN) {
       return <Outlet />;

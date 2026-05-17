@@ -8,6 +8,8 @@ const ManageSpace = lazy(() => import("@/pages/manage-space/manage-space"));
 const ManageSpaceRead = lazy(() => import("@/pages/manage-space/read"));
 const BranchManagement = lazy(() => import("@/pages/branch/branch"));
 const BranchRead = lazy(() => import("@/pages/branch/read"));
+const UserManagement = lazy(() => import("@/pages/users/user"));
+const UserRead = lazy(() => import("@/pages/users/read"));
 
 
 
@@ -47,4 +49,13 @@ export const branchRoutes: RouteObject[] = [
   },
 ];
 
-
+export const adminUserRoutes: RouteObject[] = [
+  {
+    path: "/users",
+    element: withSuspense(UserManagement),
+  },
+  {
+    path: "/users/read/:id",
+    element: withSuspense(UserRead),
+  },
+];

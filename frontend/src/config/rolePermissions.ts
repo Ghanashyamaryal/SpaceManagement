@@ -6,8 +6,7 @@ export const canAccessPath = (role: string, pathname: string) => {
   
   // Define specific access rules here
   const permissions: Record<string, string[]> = {
-    [Role.CITYADMIN]: ["/dashboard", "/users", "/caregiver"],
-    [Role.STATEADMIN]: ["/dashboard", "/users", "/caregiver", "/city-management"],
+    [Role.ADMIN]: ["/dashboard", "/users", "/caregiver", "/city-management", "/branch", "/manage-space", "/role"],
     [Role.USER]: ["/dashboard", "/profile"],
   };
 

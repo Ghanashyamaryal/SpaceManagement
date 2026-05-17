@@ -1682,7 +1682,7 @@ export function FormComponent({
                 type="button"
                 variant="ghost"
                 onClick={onCancel}
-                className="h-9 px-8 bg-gray-100 border-gray-200 hover:bg-gray-200 text-black hover:text-black rounded-xl text-[15px] transition-all border"
+                className="h-9 px-8 bg-gray-100 border-gray-200 hover:bg-gray-200 text-black hover:text-black dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-100 dark:hover:text-gray-100 rounded-xl text-[15px] transition-all border"
               >
                 {cancelText || "Cancel"}
               </Button>
@@ -1699,7 +1699,7 @@ export function FormComponent({
               <Button
                 type="submit"
                 className={cn(
-                  "h-10 px-8 bg-button-primary hover:bg-button-primary/80 text-white font-bold transition-all active:scale-95 flex items-center gap-2 rounded-xl",
+                  "h-10 px-8 bg-button-primary text-button-primary-foreground hover:bg-button-primary/80 font-bold transition-all active:scale-95 flex items-center gap-2 rounded-xl",
                   submitClassName,
                 )}
               >

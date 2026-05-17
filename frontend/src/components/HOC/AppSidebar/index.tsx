@@ -11,7 +11,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@Components/ui/Sidebar"; // Changed to direct import to avoid ambiguity if index.ts exists elsewhere
-import { Building2, ChevronRight, Home, Sofa } from "lucide-react";
+import { Building2, ChevronRight, Home, Sofa, Users } from "lucide-react";
 import React, { useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -60,6 +60,11 @@ export function AppSidebar() {
         title: "Branch Management",
         url: "/branches",
         icon: Building2,
+      },
+      {
+        title: "User Management",
+        url: "/users",
+        icon: Users,
       },
     ],
     [],
