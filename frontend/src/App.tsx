@@ -15,7 +15,7 @@ import AuthLayout from "./layout/authlayout";
 import AdminProtectedRoute from "./routes/adminProtected.route";
 import GlobalProtectedRoute from "./routes/globalProtected.route";
 import PublicRoute from "./routes/public.route";
-import { adminUserRoutes, branchRoutes, manageSpaceRoutes, userRoutes } from "./routes/routes";
+import { adminUserRoutes, branchRoutes, manageSpaceRoutes, userRoutes, planRoutes, eventRoutes, bookingRoutes } from "./routes/routes";
 
 const LoginForm = lazy(() => import("./auth/login"));
 const SignupForm = lazy(() => import("./auth/signup"));
@@ -58,7 +58,9 @@ const adminOnlyRoutes: RouteObject[] = [
       ...manageSpaceRoutes,
       ...branchRoutes,
       ...adminUserRoutes,
-      // ...visitLogRoutes,
+      ...planRoutes,
+      ...eventRoutes,
+      ...bookingRoutes,
     ],
   },
 ];

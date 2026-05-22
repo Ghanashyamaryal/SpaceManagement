@@ -1,3 +1,5 @@
+import { canAccessPath } from "@/config/rolePermissions";
+import { useAuth } from "@/context/authcontext";
 import {
   Sidebar,
   SidebarContent,
@@ -11,10 +13,9 @@ import {
   SidebarRail,
   useSidebar,
 } from "@Components/ui/Sidebar"; // Changed to direct import to avoid ambiguity if index.ts exists elsewhere
-import { Building2, ChevronRight, Home, Sofa, Users } from "lucide-react";
+import { BookOpen, Building2, Calendar, CalendarDays, ChevronRight, Home, Sofa, Users } from "lucide-react";
 import React, { useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 interface ItemsType {
   title: string;
   url: string;
@@ -66,9 +67,31 @@ export function AppSidebar() {
         url: "/users",
         icon: Users,
       },
+      {
+        title: "Plans",
+        url: "/plans",
+        icon: Calendar,
+      },
+      {
+        title: "Events",
+        url: "/events",
+        icon: CalendarDays,
+      },
+      {
+        title: "Bookings",
+        url: "/bookings",
+        icon: BookOpen,
+      },
     ],
     [],
   );
+
+  const { user } = useAuth();
+  const userRole = user?.role?.toLowerCase() || "user";
+
+  const filteredItems = useMemo(() => {
+    return items.filter(item => canAccessPath(userRole, item.url));
+  }, [items, userRole]);
 
   const isActive = (itemUrl: string) => {
     if (itemUrl === "/dashboard") {
@@ -92,7 +115,7 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent className="flex flex-col gap-2 p-2">
             <SidebarMenu>
-              {items?.map((item: ItemsType, idx: number) => (
+              {filteredItems?.map((item: ItemsType, idx: number) => (
                 <SidebarMenuItem key={item.title}>
                   {item.dropdown ? (
                     <>
@@ -178,7 +201,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border p-4 flex items-center justify-center">
         <div className="text-sm font-semibold text-sidebar-foreground">
-          {state === "collapsed" ? "V1" : "LMS-v1"}
+          {state === "collapsed" ? "V1" : "Space Management System"}
         </div>
       </SidebarFooter>
       <SidebarRail />

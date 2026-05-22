@@ -59,6 +59,7 @@ interface DataTableProps {
   searchHide?: boolean; // Optional prop to hide the search input
   paginationHide?: boolean; // Optional prop to hide the search input
   filterComponent?: React.ReactNode;
+  onRowClick?: (row: any) => void;
 }
 
 export type TQueryMeta = {
@@ -83,6 +84,7 @@ export function DataTables({
   showExport,
   tableHeading = "Data Table",
   filterComponent,
+  onRowClick,
 }: DataTableProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [inputValue, setInputValue] = useState(
@@ -201,7 +203,6 @@ export function DataTables({
         return false;
       };
 
-      // Search through the entire row original data
       return searchInValue(row.original);
     },
 
@@ -370,7 +371,8 @@ export function DataTables({
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
-                      className="hover:bg-muted/50 transition-colors border-b border-border"
+                      className={`hover:bg-muted/50 transition-colors border-b border-border ${onRowClick ? 'cursor-pointer' : ''}`}
+                      onClick={onRowClick ? () => onRowClick(row.original) : undefined}
                     >
                       <TableCell className="text-center font-medium py-4">
                         {meta

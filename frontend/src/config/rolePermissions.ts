@@ -6,8 +6,25 @@ export const canAccessPath = (role: string, pathname: string) => {
   
   // Define specific access rules here
   const permissions: Record<string, string[]> = {
-    [Role.ADMIN]: ["/dashboard", "/users", "/caregiver", "/city-management", "/branch", "/manage-space", "/role"],
-    [Role.USER]: ["/dashboard", "/profile"],
+    [Role.ADMIN]: [
+      "/dashboard", 
+      "/users", 
+      "/caregiver", 
+      "/city-management", 
+      "/branch", 
+      "/branches",
+      "/manage-space", 
+      "/role",
+      "/events",
+      "/bookings",
+      "/plans"
+    ],
+    [Role.USER]: [
+      "/dashboard", 
+      "/profile",
+      "/events", // Assuming users can see events
+      "/bookings" // Assuming users can see their bookings
+    ],
   };
 
   const allowedPaths = permissions[role] || ["/dashboard"];
