@@ -44,8 +44,8 @@ export default function Bookings() {
   }, [navigate]);
 
   const columns = useMemo(
-    () => bookingColumns(handleOpenUpdate),
-    [handleOpenUpdate],
+    () => bookingColumns(refetch, handleOpenUpdate),
+    [refetch, handleOpenUpdate],
   );
 
   return (

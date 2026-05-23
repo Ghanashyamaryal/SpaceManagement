@@ -44,8 +44,8 @@ export default function Events() {
   }, [navigate]);
 
   const columns = useMemo(
-    () => eventColumns(handleOpenUpdate),
-    [handleOpenUpdate],
+    () => eventColumns(refetch, handleOpenUpdate),
+    [refetch, handleOpenUpdate],
   );
 
   return (

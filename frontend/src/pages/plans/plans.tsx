@@ -44,8 +44,8 @@ export default function Plans() {
   }, [navigate]);
 
   const columns = useMemo(
-    () => planColumns(handleOpenUpdate),
-    [handleOpenUpdate],
+    () => planColumns(refetch, handleOpenUpdate),
+    [refetch, handleOpenUpdate],
   );
 
   return (
