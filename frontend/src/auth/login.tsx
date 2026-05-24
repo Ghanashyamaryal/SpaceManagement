@@ -12,8 +12,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ export default function LoginPage() {
         <CardContent className="space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-4xl font-extrabold tracking-tight text-foreground border-none">
-              Welcome to <br /> Knowledge Hub
+              Welcome to <br /> Space Management System
             </h1>
             <p className="text-muted-foreground font-medium">Sign in to continue</p>
           </div>
