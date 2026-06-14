@@ -14,6 +14,7 @@ import eventRoutes from './routes/events/index.js';
 import publicRoutes from './routes/public/index.js';
 import dashboardRoutes from './routes/dashboard/index.js';
 import uploadRoutes from './routes/upload/index.js';
+import canteenRoutes from './routes/canteen/index.js';
 
 const app = express();
 
@@ -63,6 +64,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/canteen', canteenRoutes);
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
