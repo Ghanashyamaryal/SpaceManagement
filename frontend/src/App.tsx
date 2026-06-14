@@ -11,11 +11,22 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { AuthProvider } from "./context/authcontext";
+import { CartProvider } from "./context/cartContext";
 import AuthLayout from "./layout/authlayout";
 import AdminProtectedRoute from "./routes/adminProtected.route";
 import GlobalProtectedRoute from "./routes/globalProtected.route";
 import PublicRoute from "./routes/public.route";
-import { adminUserRoutes, branchRoutes, manageSpaceRoutes, userRoutes, planRoutes, eventRoutes, bookingRoutes } from "./routes/routes";
+import {
+  adminUserRoutes,
+  branchRoutes,
+  manageSpaceRoutes,
+  userRoutes,
+  planRoutes,
+  eventRoutes,
+  bookingRoutes,
+  canteenAdminRoutes,
+  canteenUserRoutes,
+} from "./routes/routes";
 
 const LoginForm = lazy(() => import("./auth/login"));
 const SignupForm = lazy(() => import("./auth/signup"));
@@ -61,6 +72,8 @@ const adminOnlyRoutes: RouteObject[] = [
       ...planRoutes,
       ...eventRoutes,
       ...bookingRoutes,
+      ...canteenAdminRoutes,
+      ...canteenUserRoutes,
     ],
   },
 ];
@@ -70,8 +83,10 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <AuthProvider>
-        <Toaster />
-        <Outlet />
+        <CartProvider>
+          <Toaster />
+          <Outlet />
+        </CartProvider>
       </AuthProvider>
     ),
     errorElement: <Error />,

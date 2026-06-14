@@ -13,7 +13,20 @@ import {
   SidebarRail,
   useSidebar,
 } from "@Components/ui/Sidebar"; // Changed to direct import to avoid ambiguity if index.ts exists elsewhere
-import { BookOpen, Building2, Calendar, CalendarDays, ChevronRight, Home, Sofa, Users } from "lucide-react";
+import {
+  BookOpen,
+  Building2,
+  Calendar,
+  CalendarDays,
+  ChevronRight,
+  ClipboardList,
+  Home,
+  ShoppingCart,
+  Sofa,
+  UtensilsCrossed,
+  Users,
+  Wallet,
+} from "lucide-react";
 import React, { useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 interface ItemsType {
@@ -81,6 +94,36 @@ export function AppSidebar() {
         title: "Bookings",
         url: "/bookings",
         icon: BookOpen,
+      },
+      {
+        title: "Canteen Menu",
+        url: "/canteen-menu",
+        icon: UtensilsCrossed,
+      },
+      {
+        title: "Canteen Orders",
+        url: "/canteen-orders",
+        icon: ClipboardList,
+      },
+      {
+        title: "Canteen Credits",
+        url: "/canteen-credits",
+        icon: Wallet,
+      },
+      {
+        title: "Canteen",
+        url: "/canteen",
+        icon: ShoppingCart,
+      },
+      {
+        title: "My Orders",
+        url: "/my-orders",
+        icon: ClipboardList,
+      },
+      {
+        title: "My Credit",
+        url: "/my-credit",
+        icon: Wallet,
       },
     ],
     [],
