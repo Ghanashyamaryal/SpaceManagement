@@ -1,7 +1,9 @@
 import { createUserFields } from "@/components/fields/user";
 import { FormComponent } from "@/components/form/form";
 import { useMutation } from "@/hooks";
+import { useFetch } from "@/hooks/queryFn";
 import { createUserSchema } from "@/schemas/user";
+import { useMemo } from "react";
 import { toast } from "sonner";
 import { Role } from "@/enum/enum";
 
@@ -11,6 +13,21 @@ interface CreateUserProps {
 }
 
 export default function CreateUser({ onSuccess, onCancel }: CreateUserProps) {
+  const { data: branchData } = useFetch({ path: "/api/branches" });
+  const branches = branchData?.branches || [];
+
+  const fields = useMemo(() => {
+    return createUserFields.map((field) => {
+      if (field.name === "branch") {
+        return {
+          ...field,
+          options: branches.map((b: any) => ({ label: b.name, value: b._id })),
+        };
+      }
+      return field;
+    });
+  }, [branches]);
+
   const createMutation = useMutation({
     path: "/api/users",
     method: "POST",
@@ -35,11 +52,12 @@ export default function CreateUser({ onSuccess, onCancel }: CreateUserProps) {
   return (
     <div className="space-y-6">
       <FormComponent
-        fields={createUserFields}
+        fields={fields}
         defaultValue={{
           name: "",
           email: "",
           role: Role.USER,
+          branch: "",
           status: "active",
           password: "",
         }}

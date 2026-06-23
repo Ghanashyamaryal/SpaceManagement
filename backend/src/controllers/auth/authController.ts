@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { UserModel } from '../../models/user/index.js';
+import { BranchModel } from '../../models/branch/index.js';
 import { hashPassword, verifyPassword } from '../../utils/hash.js';
 import { signToken } from '../../utils/jwt.js';
 import { generateResetToken, hashResetToken } from '../../utils/resetToken.js';
@@ -8,13 +9,23 @@ const PASSWORD_MIN = 8;
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
 
 export async function signup(req: Request, res: Response): Promise<void> {
-  const { name, email, password, phone } = req.body ?? {};
+  const { name, email, password, phone, branch } = req.body ?? {};
   if (!name || !email || !password) {
     res.status(400).json({ error: 'name, email, password required' });
     return;
   }
   if (String(password).length < PASSWORD_MIN) {
     res.status(400).json({ error: `password must be at least ${PASSWORD_MIN} characters` });
+    return;
+  }
+  if (!branch) {
+    res.status(400).json({ error: 'branch required' });
+    return;
+  }
+
+  const branchDoc = await BranchModel.findById(branch);
+  if (!branchDoc) {
+    res.status(400).json({ error: 'branch not found' });
     return;
   }
 
@@ -31,14 +42,14 @@ export async function signup(req: Request, res: Response): Promise<void> {
     email: normalizedEmail,
     passwordHash,
     role: 'user',
-    branch: null,
+    branch: branchDoc._id,
     phone: phone ?? '',
   });
 
   const token = signToken({
     sub: user._id.toString(),
     role: user.role,
-    branch: null,
+    branch: user.branch ? user.branch.toString() : null,
   });
 
   res.status(201).json({ token, user });

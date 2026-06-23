@@ -16,6 +16,9 @@ export const signupSchema = yup.object().shape({
   phone: yup
     .string()
     .required("Phone number is required"),
+  branch: yup
+    .string()
+    .required("Branch is required"),
 });
 
 export type SignupInput = yup.InferType<typeof signupSchema>;
