@@ -9,8 +9,8 @@ import { useAuth } from "@/context/authcontext";
 import type { SignupInput } from "@/schemas/signup";
 import { signupSchema } from "@/schemas/signup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import { useState } from "react";
+import { Building2, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ export default function SignupPage() {
   const { login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [branches, setBranches] = useState<{ _id: string; name: string }[]>([]);
 
   const {
     register,
@@ -28,6 +29,14 @@ export default function SignupPage() {
   } = useForm<SignupInput>({
     resolver: yupResolver(signupSchema) as any,
   });
+
+  useEffect(() => {
+    // Public endpoint — no auth needed since the user isn't logged in yet.
+    fetch("/api/public/branches")
+      .then((res) => res.json())
+      .then((data) => setBranches(data?.branches || []))
+      .catch(() => setBranches([]));
+  }, []);
 
   const onSubmit = async (data: SignupInput) => {
     setIsSubmitting(true);
@@ -140,6 +149,36 @@ export default function SignupPage() {
               </div>
               {errors.phone && (
                 <p className="text-xs font-semibold text-destructive mt-1">{errors.phone.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="branch" className="text-sm font-bold text-foreground/80">
+                Branch
+              </Label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Building2 className="h-5 w-5 text-primary/70" />
+                </div>
+                <select
+                  id="branch"
+                  defaultValue=""
+                  {...register("branch")}
+                  className={`w-full pl-10 h-12 rounded-xl border border-border bg-background text-foreground transition-all duration-200 outline-none focus-visible:ring-0 focus-visible:border-border appearance-none ${errors.branch ? "border-destructive" : ""
+                    }`}
+                >
+                  <option value="" disabled>
+                    Select a branch
+                  </option>
+                  {branches.map((b) => (
+                    <option key={b._id} value={b._id}>
+                      {b.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {errors.branch && (
+                <p className="text-xs font-semibold text-destructive mt-1">{errors.branch.message}</p>
               )}
             </div>
 

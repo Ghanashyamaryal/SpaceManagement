@@ -26,6 +26,16 @@ export const userFields: Field[] = [
     ],
   },
   {
+    name: "branch",
+    label: "Branch",
+    type: "select",
+    required: true,
+    options: [],
+    // Only Admin and Users belong to a branch; Super Admin is global.
+    condition: (formData: any) =>
+      formData?.role === Role.ADMIN || formData?.role === Role.USER,
+  },
+  {
     name: "status",
     label: "Status",
     type: "select",
