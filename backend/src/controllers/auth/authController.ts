@@ -44,6 +44,7 @@ export async function signup(req: Request, res: Response): Promise<void> {
     role: 'user',
     branch: branchDoc._id,
     phone: phone ?? '',
+    isApproved: false,
   });
 
   const token = signToken({

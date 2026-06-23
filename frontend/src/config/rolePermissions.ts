@@ -1,5 +1,14 @@
 import { Role } from "@/enum/enum";
 
+// Admins/superadmins always have access; self-signup `user` accounts must be
+// explicitly approved before they get anything beyond the dashboard.
+export const isApprovedUser = (user: { role?: string; isApproved?: boolean } | null | undefined) => {
+  if (!user) return false;
+  const role = user.role?.toLowerCase();
+  if (role === Role.SUPERADMIN || role === Role.ADMIN) return true;
+  return user.isApproved === true;
+};
+
 export const canAccessPath = (role: string, pathname: string) => {
   // Simple implementation for now
   if (role === Role.SUPERADMIN) return true;

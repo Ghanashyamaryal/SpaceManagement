@@ -25,6 +25,7 @@ async function seed(): Promise<void> {
     passwordHash,
     role: 'superadmin',
     branch: null,
+    isApproved: true,
   });
 
   console.log(`Superadmin created: ${user.email}`);

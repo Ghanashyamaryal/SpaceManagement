@@ -27,4 +27,15 @@ router.post(
   uploadImage
 );
 
+// Any authenticated user can upload their own avatar (forced to the avatars folder).
+router.post(
+  '/avatar',
+  upload.single('image'),
+  (req, _res, next) => {
+    req.body = { ...req.body, folder: 'avatars' };
+    next();
+  },
+  uploadImage
+);
+
 export default router;

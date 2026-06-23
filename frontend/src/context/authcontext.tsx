@@ -5,6 +5,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   login: (token: string, user: any) => void;
+  updateUser: (user: any) => void;
   logout: () => void;
 }
 
@@ -19,8 +20,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
     if (token && storedUser) {
+      // Render immediately from the cached user...
       setUser(JSON.parse(storedUser));
       setIsLoggedIn(true);
+
+      // ...then refresh from the server so approval status (and any other
+      // server-side changes) stay current without requiring a re-login.
+      fetch("/api/auth/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data) => {
+          if (data?.user) {
+            localStorage.setItem("user", JSON.stringify(data.user));
+            setUser(data.user);
+          }
+        })
+        .catch(() => {
+          /* keep cached user on transient failure */
+        });
     }
     setIsLoading(false);
   }, []);
@@ -32,6 +50,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoggedIn(true);
   };
 
+  const updateUser = (userData: any) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -40,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, login, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -42,7 +42,7 @@ export default function Layout() {
               <DropdownMenuTrigger className="flex items-center cursor-pointer gap-2">
                 <Avatar>
                   <AvatarImage
-                    src={user?.image}
+                    src={user?.avatarUrl || user?.image}
                     alt="User"
                   />
                   <AvatarFallback>

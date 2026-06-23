@@ -1,4 +1,4 @@
-import { canAccessPath } from "@/config/rolePermissions";
+import { canAccessPath, isApprovedUser } from "@/config/rolePermissions";
 import { useAuth } from "@/context/authcontext";
 import {
   Sidebar,
@@ -133,8 +133,12 @@ export function AppSidebar() {
   const userRole = user?.role?.toLowerCase() || "user";
 
   const filteredItems = useMemo(() => {
+    // Pending (unapproved) users only get the Dashboard until they're approved.
+    if (!isApprovedUser(user)) {
+      return items.filter(item => item.url === "/dashboard");
+    }
     return items.filter(item => canAccessPath(userRole, item.url));
-  }, [items, userRole]);
+  }, [items, userRole, user]);
 
   const isActive = (itemUrl: string) => {
     if (itemUrl === "/dashboard") {

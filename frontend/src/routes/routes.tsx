@@ -4,6 +4,7 @@ import { lazy } from "react";
 import type { RouteObject } from "react-router-dom";
 
 const Dashboard = lazy(() => import("@/pages/dashboard/dashboard"));
+const Profile = lazy(() => import("@/pages/profile/profile"));
 const ManageSpace = lazy(() => import("@/pages/manage-space/manage-space"));
 const ManageSpaceRead = lazy(() => import("@/pages/manage-space/read"));
 const BranchManagement = lazy(() => import("@/pages/branch/branch"));
@@ -29,6 +30,10 @@ export const userRoutes: RouteObject[] = [
   {
     path: "/dashboard",
     element: withSuspense(Dashboard),
+  },
+  {
+    path: "/profile",
+    element: withSuspense(Profile),
   },
 ];
 export const manageSpaceRoutes: RouteObject[] = [

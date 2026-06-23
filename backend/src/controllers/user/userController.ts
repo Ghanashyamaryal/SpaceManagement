@@ -53,6 +53,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     role: targetRole,
     branch: targetBranch,
     phone: phone ?? '',
+    isApproved: true,
   });
 
   res.status(201).json({ user });
@@ -99,8 +100,14 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  const { name, phone, isActive, role, branch } = req.body ?? {};
+  const { name, phone, avatarUrl, bio, isActive, isApproved, role, branch } = req.body ?? {};
   const isSelf = target._id.toString() === actor.sub;
+
+  // Regular users may only edit their own profile.
+  if (actor.role === 'user' && !isSelf) {
+    res.status(403).json({ error: 'Cannot update other users' });
+    return;
+  }
 
   if (actor.role === 'admin' && !isSelf && target.branch?.toString() !== actor.branch) {
     res.status(403).json({ error: 'Cannot update user outside your branch' });
@@ -109,6 +116,8 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
 
   if (name != null) target.name = name;
   if (phone != null) target.phone = phone;
+  if (avatarUrl != null) target.avatarUrl = avatarUrl;
+  if (bio != null) target.bio = bio;
 
   if (isActive != null) {
     if (actor.role === 'user') {
@@ -116,6 +125,14 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
       return;
     }
     target.isActive = !!isActive;
+  }
+
+  if (isApproved != null) {
+    if (actor.role === 'user') {
+      res.status(403).json({ error: 'Cannot change approval status' });
+      return;
+    }
+    target.set('isApproved', !!isApproved);
   }
 
   if (role != null) {

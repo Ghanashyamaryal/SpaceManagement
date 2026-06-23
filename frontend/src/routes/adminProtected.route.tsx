@@ -3,7 +3,7 @@ import { useAuth } from "@/context/authcontext";
 import Error from "@Components/common/Error";
 import { Role } from "@/enum/enum";
 import Loading from "@Components/common/Loading";
-import { canAccessPath } from "@/config/rolePermissions";
+import { canAccessPath, isApprovedUser } from "@/config/rolePermissions";
 
 const AdminProtectedRoute = () => {
   const { user, isLoggedIn, isLoading } = useAuth();
@@ -16,6 +16,11 @@ const AdminProtectedRoute = () => {
   
   if (!isLoggedIn || !userRole) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Unapproved self-signups are confined to the dashboard until an admin approves them.
+  if (!isApprovedUser(user) && location.pathname !== "/dashboard") {
+    return <Navigate to="/dashboard" replace />;
   }
 
   if

@@ -4,6 +4,11 @@ import {
   CardContent,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components";
 import { useAuth } from "@/context/authcontext";
 import type { SignupInput } from "@/schemas/signup";
@@ -11,7 +16,7 @@ import { signupSchema } from "@/schemas/signup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Building2, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -25,6 +30,7 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<SignupInput>({
     resolver: yupResolver(signupSchema) as any,
@@ -157,25 +163,32 @@ export default function SignupPage() {
                 Branch
               </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                   <Building2 className="h-5 w-5 text-primary/70" />
                 </div>
-                <select
-                  id="branch"
+                <Controller
+                  name="branch"
+                  control={control}
                   defaultValue=""
-                  {...register("branch")}
-                  className={`w-full pl-10 h-12 rounded-xl border border-border bg-background text-foreground transition-all duration-200 outline-none focus-visible:ring-0 focus-visible:border-border appearance-none ${errors.branch ? "border-destructive" : ""
-                    }`}
-                >
-                  <option value="" disabled>
-                    Select a branch
-                  </option>
-                  {branches.map((b) => (
-                    <option key={b._id} value={b._id}>
-                      {b.name}
-                    </option>
-                  ))}
-                </select>
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        id="branch"
+                        className={`w-full pl-10 h-12 rounded-xl border-border bg-background text-foreground transition-all duration-200 ${errors.branch ? "border-destructive" : ""
+                          }`}
+                      >
+                        <SelectValue placeholder="Select a branch" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {branches.map((b) => (
+                          <SelectItem key={b._id} value={b._id}>
+                            {b.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
               {errors.branch && (
                 <p className="text-xs font-semibold text-destructive mt-1">{errors.branch.message}</p>
